@@ -8,7 +8,14 @@ class Sudoku:
 
     def __str__(self) -> str:
         s = ""
-        # YOUR CODE HERE
+        for row in range(1, 10):
+            for col in range(1, 10):
+                s += f'{self.sudoku[(row, col)]} '
+                if col in (3, 6):
+                    s += ' '
+            s += '\n'
+            if row in (3, 6):
+                s += '\n'
         return s
 
     @classmethod
@@ -20,5 +27,9 @@ class Sudoku:
     @classmethod
     def from_model(cls, model: clingo.solving.Model) -> "Sudoku":
         sudoku = {}
-        # YOUR CODE HERE
+        for atom in model.symbols(shown=True):
+            row = atom.arguments[0].number
+            col = atom.arguments[1].number
+            value = atom.arguments[2].number
+            sudoku[(row, col)] = value
         return cls(sudoku)
